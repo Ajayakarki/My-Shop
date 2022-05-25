@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} Home {% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h1 class="text-center">Welcome to MyShop</h1>
+        <hr>
+        <div class="row mt-5"> 
+            {% for p in all_products %}
+            <div class="col-md-4">
+                <h5 style="text-align: center"><a href="{% url 'productdetail' p.slug %}">{{ p.title }}</a></h5>
+                <img src="{{ p.image.url }}" alt="" width="350" height="300">
+                <p class="text-center mt-3"><b>Price: <strike class="text-danger">Rs. {{ p.marked_price }}</strike> Rs. {{ p.selling_price }}</b></p>
+                <a href="{% url 'addtocart' p.id %}" class="btn btn-primary ml-5">Add to cart</a>
+                
+                <br><hr>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+        
+{% endblock %}

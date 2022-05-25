@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}  {% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+    <div class="row my-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <table class="table bg-light">
+                <thead class="bg-primary">
+                    <tr class="text-white">
+                        <th scope="col">SN</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Rate</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cp in cart.cartproduct_set.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ cp.product.title }}</td>
+                        <td>{{ cp.rate }}</td>
+                        <td>{{ cp.quantity }}</td>
+                        <td>{{ cp.subtotal }}</td>
+                        <td>
+                            <a class="btn btn-primary" href="{% url 'managecart' cp.id %}?action=inc">+</a>
+                            <a class="btn btn-primary" href="{% url 'managecart' cp.id %}?action=dec">-</a>
+                            <a class="btn btn-danger" href="{% url 'managecart' cp.id %}?action=can">Cancell</a>
+                        </td>                        
+                    </tr>
+                   {% endfor %}
+                   <tr>
+                       <th colspan="4" class="text-right">Total</th>
+                       <th>Rs. {{ cart.total }}</th>
+                       {% if cart.cartproduct_set.all %}
+                       <th><b><a href="{% url 'emptycart' %}" class="text-warning">Empty Cart</a></b> </th>
+                        {% endif %}
+
+                   </tr>                   
+                </tbody>
+            </table>
+            <a class="btn btn-primary" href="{% url 'checkout' %}">Checkout</a>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}
