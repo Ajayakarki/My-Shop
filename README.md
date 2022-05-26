@@ -1,2 +1,2 @@
 # My Shop
- Django ecommerce project
+ Django ecommerce project (Ongoing)
