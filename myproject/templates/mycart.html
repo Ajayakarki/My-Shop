@@ -46,7 +46,9 @@
                    </tr>                   
                 </tbody>
             </table>
+            {% if cart.cartproduct_set.all %}
             <a class="btn btn-primary" href="{% url 'checkout' %}">Checkout</a>
+            {% endif %}
         </div>
     </div>
 

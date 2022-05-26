@@ -1,6 +1,8 @@
 import imp
 from django.urls import path
-from .views import HomeView, AboutUs, ContactUs, CategoriesView, ProductDetailView, AddtoCartView, MyCartView, ManageCartView, EmptyCartView, CheckOutView
+# from .views import HomeView, AboutUs, ContactUs, CategoriesView, LoginView, ProductDetailView, AddtoCartView, MyCartView, ManageCartView, EmptyCartView, CheckOutView, CustomerRegistrationView
+from .views import *
+
 
 # app_name = 'myshop'
 
@@ -17,6 +19,14 @@ urlpatterns = [
     path('emptycart/', EmptyCartView.as_view(), name='emptycart'),
 
     path('checkout/', CheckOutView.as_view(), name='checkout'),
+
+    path('registration/', CustomerRegistrationView.as_view(), name='customerregistration'),
+
+    path('login/', LoginView.as_view(), name='login'),
+
+    path('logout/', LogoutView.as_view(), name='logout'),
+
+
 
 
 
