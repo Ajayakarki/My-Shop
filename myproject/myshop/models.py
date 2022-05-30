@@ -89,6 +89,8 @@ class Order(models.Model):
     discount = models.PositiveIntegerField()
     total = models.PositiveIntegerField()
     order_status = models.CharField(max_length=30, choices=ORDER_STATUS)
+    order_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+
 
     class Meta:
         verbose_name_plural = 'Order'

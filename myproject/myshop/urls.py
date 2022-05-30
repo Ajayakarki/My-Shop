@@ -26,6 +26,11 @@ urlpatterns = [
 
     path('logout/', LogoutView.as_view(), name='logout'),
 
+    path('customerprofile/', CustomerProfileView.as_view(), name='customer_profile'),
+
+    path('customer-order-detail/<int:pk>', CustomerOrderDetailView.as_view(), name='customer_order_detail'),
+
+
 
 
 

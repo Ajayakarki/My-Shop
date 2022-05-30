@@ -1,7 +1,7 @@
 from urllib import request
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, CreateView, FormView
+from django.views.generic import TemplateView, View, CreateView, FormView, DetailView
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -232,7 +232,7 @@ class LoginView(FormView):
         user_name = form.cleaned_data.get('username')
         passw = form.cleaned_data.get('password')
         user = authenticate(username=user_name, password=passw)
-        if user is not None and user.customer:
+        if user is not None and Customer.objects.filter(user=user):
             login(self.request, user)
         else:
             return render(self.request, self.template_name, {'form': self.form_class, 'error': 'Invaid Credentials'})
@@ -249,6 +249,26 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('home')
+
+class CustomerProfileView(TemplateView):
+    template_name = 'customer_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        customer = self.request.user.customer
+        context['customer'] = customer
+
+        customer_order = Order.objects.filter(cart__customer=self.request.user)
+        context['customer_order'] = customer_order
+
+        return context
+
+class CustomerOrderDetailView(DetailView):
+    template_name = 'customer_order.html'
+    model = Order
+    context_object_name = 'order_obj'
+
+    
 
 
 
