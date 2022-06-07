@@ -30,6 +30,19 @@ urlpatterns = [
 
     path('customer-order-detail/<int:pk>', CustomerOrderDetailView.as_view(), name='customer_order_detail'),
 
+    path('admin-login', AdminLogin.as_view(), name='admin_login'),
+
+    path('admin-home', AdminHome.as_view(), name='admin_home'), 
+
+    path('pending-orders', AminPendingOrders.as_view(), name='pending_orders'),
+
+    path('order-detail/<int:pk>', AdminOrderDetail.as_view(), name='orders_detail'),
+
+    path('all-orders', OllOderesView.as_view(), name='all_orders'),
+
+
+
+
 
 
 

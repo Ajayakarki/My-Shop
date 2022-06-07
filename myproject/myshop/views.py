@@ -1,7 +1,7 @@
 from urllib import request
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, View, CreateView, FormView, DetailView
+from django.views.generic import TemplateView, View, CreateView, FormView, DetailView, ListView
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -9,7 +9,7 @@ from django.contrib import messages
 
 from .models import *
 
-from .forms import CheckOutForm, CustomerRegistrationForm, LoginForm
+from .forms import CheckOutForm, CustomerRegistrationForm, LoginForm, AdminLoginForm
 
 # Create your views here.
 
@@ -287,6 +287,63 @@ class CustomerOrderDetailView(DetailView):
             return redirect('login')
 
         return super().dispatch(request, *args, **kwargs)
+
+
+### For Admin #####
+class AdminLogin(FormView):
+    template_name = 'adminlogin.html'
+    form_class = AdminLoginForm
+    success_url = reverse_lazy('admin_home')
+
+    def form_valid(self, form):
+        user_name = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username = user_name, password = password)
+        if user is not None and Admin.objects.filter(user = user):
+            login(self.request, user)
+        else:
+            return render(self.request, self.template_name, {"form": self.form_class, 'error': 'Invalid Credentials'})
+        return super().form_valid(form)
+
+class AdminMixin(object):
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and Admin.objects.filter(user=request.user):
+            pass
+        else:
+            return redirect('admin_login')
+
+        return super().dispatch(request, *args, **kwargs) 
+
+
+class AdminHome(AdminMixin, TemplateView):
+    template_name = 'admin_home.html'
+
+
+
+class AminPendingOrders(AdminMixin, TemplateView):
+    template_name = 'pending_orders.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['pending_orders'] = Order.objects.filter(order_status = 'Order Received')
+
+        return context
+
+class AdminOrderDetail(AdminMixin, DetailView):
+    template_name = 'admindetail.html'
+    model = Order
+    context_object_name = 'order_obj'
+
+
+class OllOderesView(AdminMixin, ListView):
+    template_name = 'all_orders.html'
+    queryset = Order.objects.all().order_by('-id')
+    context_object_name = 'all_orders'
+
+
+
+
 
    
 

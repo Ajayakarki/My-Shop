@@ -1,0 +1,55 @@
+{% extends 'adminbase.html' %}
+
+{% block title %} Detail {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row offset">
+        <div class="col-md-5">
+            <h2>Customer Orders</h2> <hr>
+            <p><span class="font-weight-bold">Order Id: </span> {{ order_obj.id }}</p>
+            <p><span class="font-weight-bold">Order At: </span> {{ order_obj.order_at }} ({{order_obj.order_at|timesince }} ago)</p>
+            <p><span class="font-weight-bold">Order Status: </span> {{ order_obj.order_status }}</p>
+            <p><span class="font-weight-bold">Order By: </span> {{ order_obj.ordered_by }}</p>
+            <p><span class="font-weight-bold">Email: </span> {{ order_obj.email }}</p>
+            <p><span class="font-weight-bold">Phone: </span> {{ order_obj.mobile }}</p>
+            <p><span class="font-weight-bold">Shipping Address: </span> {{ order_obj.shipping_address }}</p>
+
+        </div>
+        <div class="col-md-7">
+            <h2>Product Details</h2> <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Item</th>
+                        <th>Rate</th>
+                        <th>Quantity</th>
+                        <th>Sub total</th>
+                        <th>Image</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in order_obj.cart.cartproduct_set.all %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ order.product.title }}</a></td>
+                        <td>{{ order.rate }}</td>
+                        <td>{{ order.quantity}}</td>   
+                        <td>{{ order.subtotal}}</td>  
+                        <td><img src="{{ order.product.image.url }}" height="42" width="55"></a></td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <th colspan="4" class="text-right">Total: </th>
+                        <th>{{ order_obj.total }}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

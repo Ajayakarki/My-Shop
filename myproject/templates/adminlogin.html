@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %} Admin Login {% endblock %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row offset-md-3 mt-3">
+        <div class="col-md-8">
+            <h3>Admin Login</h3>
+         
+            <div class="border p-3">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+
+                    <button class="btn btn-primary">Login</button>
+                    {% if error %}
+                    <li style="color: red">{{ error }}</li>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

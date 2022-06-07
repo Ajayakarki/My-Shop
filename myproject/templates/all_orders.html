@@ -1,0 +1,40 @@
+{% extends 'adminbase.html' %}
+
+{% block title %} All orders {% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-10">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>S.N</th>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Ordered On</th>
+                        <th>Amout</th>
+                        <th>Status</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in all_orders %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'orders_detail' order.id %}">##ORDER{{ order.id }}</a></td>
+                        <td>{{ order.ordered_by }}</td>
+                        <td>{{ order.order_at}}</td>
+                        <td>{{ order.total}}</td> 
+                        <td>{{ order.order_status}}</td>   
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
