@@ -1,3 +1,4 @@
+from unicodedata import name
 from urllib import request
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -9,7 +10,9 @@ from django.contrib import messages
 
 from .models import *
 
-from .forms import CheckOutForm, CustomerRegistrationForm, LoginForm, AdminLoginForm
+from .forms import CheckOutForm, CustomerRegistrationForm, LoginForm, AdminLoginForm, OrderStatusForm
+
+from django.db.models import Q
 
 # Create your views here.
 
@@ -340,6 +343,44 @@ class OllOderesView(AdminMixin, ListView):
     template_name = 'all_orders.html'
     queryset = Order.objects.all().order_by('-id')
     context_object_name = 'all_orders'
+
+class UpdateOederStatus(AdminMixin, View):
+    def post(self, request, **kwargs):
+        order_id = self.kwargs['pk']
+        order_obj = Order.objects.get(id=order_id)
+        order_status_form = OrderStatusForm(request.POST, instance=order_obj)
+        if order_status_form.is_valid():
+            order_status_form.save()
+            return redirect('all_orders')
+        context = {
+            'order_status_form': order_status_form
+        }
+        return render(request, 'order_status.html', context)
+
+    def get(self, request, **kwargs):
+        order_id = self.kwargs['pk']
+        order_obj = Order.objects.get(id=order_id)
+        order_status_form = OrderStatusForm(instance=order_obj)
+        context = {
+            'order_status_form': order_status_form
+        }
+        return render(request, 'order_status.html', context)
+
+class ProductSearch(TemplateView):
+    template_name = 'search.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        result = self.request.GET.get('search')
+        product_obj = Product.objects.filter(Q(title__icontains=result) | Q(description__icontains=result) )
+        context['results'] = product_obj
+        context['search'] = result
+
+
+        return context
+        
+
+    
 
 
 

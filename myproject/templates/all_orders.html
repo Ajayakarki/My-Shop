@@ -16,6 +16,8 @@
                         <th>Ordered On</th>
                         <th>Amout</th>
                         <th>Status</th>
+                        <!-- <th>Action</th> -->
+
                         
                     </tr>
                 </thead>
@@ -27,7 +29,9 @@
                         <td>{{ order.ordered_by }}</td>
                         <td>{{ order.order_at}}</td>
                         <td>{{ order.total}}</td> 
-                        <td>{{ order.order_status}}</td>   
+                        <td>{{ order.order_status}}</td>
+                        <!-- <td><a class="btn btn-primary" href="{% url 'order_status' order.id %}">Update Status</a></td>    -->
+
 
 
                     </tr>

@@ -1,0 +1,28 @@
+{% extends 'adminbase.html' %}
+
+{% block title %} Update Order Status {% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row offset-md-3 mt-5">
+            <div class="col-md-6">
+                <h1>Change Order Status</h1>
+                <div class="border p-3">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ order_status_form }} <br>
+
+                        <input class="btn btn-primary" type="submit" value="Update">
+                
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    
+{% endblock %}

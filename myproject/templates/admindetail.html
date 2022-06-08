@@ -10,7 +10,7 @@
             <h2>Customer Orders</h2> <hr>
             <p><span class="font-weight-bold">Order Id: </span> {{ order_obj.id }}</p>
             <p><span class="font-weight-bold">Order At: </span> {{ order_obj.order_at }} ({{order_obj.order_at|timesince }} ago)</p>
-            <p><span class="font-weight-bold">Order Status: </span> {{ order_obj.order_status }}</p>
+            <p><span class="font-weight-bold">Order Status: </span> {{ order_obj.order_status }}  &nbsp;<a href="{% url 'order_status' order_obj.id %}">Chang Status</a></p>
             <p><span class="font-weight-bold">Order By: </span> {{ order_obj.ordered_by }}</p>
             <p><span class="font-weight-bold">Email: </span> {{ order_obj.email }}</p>
             <p><span class="font-weight-bold">Phone: </span> {{ order_obj.mobile }}</p>

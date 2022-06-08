@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %} Search Result {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Search result for <span class="text-primary">"{{ search }}"</span></h2>
+                <hr>
+            </div>
+            {% for result in results %}
+            <div class="col-md-5">
+                <h3><a href="{% url 'productdetail' result.slug %}">{{ result.title }}</a></h3>
+                <img src="{{ result.image.url }}" height="300px" width="400px">
+                <hr>
+            </div>
+            <div class="col-md-7">
+                <h3>Description</h3>
+                <p>{{ result.description }}</p>
+                <p class="text-primary">Warranty: {{ result.warranty }}</p>
+                <p class="text-primary">return_policy: {{ result.return_policy }}</p><hr>
+                <a href="{% url 'addtocart' result.id %}" class="btn btn-primary">Add Item to cart</a>
+
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}

@@ -19,6 +19,17 @@
     <a href="{% url 'customerregistration' %}">Registration</a> |
     <a href="{% url 'login' %}">Login</a> |
     <a href="{% url 'admin_login' %}">Admin Login</a> |
+    <div class="container">
+      <div class="row offset-md-3">
+        <div class="col-md-6">
+          <form action="{% url 'product_search' %}" method="GET">
+            <input type="text" name="search" placeholder="Search products here" required>
+            <button>Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    
 
 
     {% if user.is_authenticated and user.customer %}
@@ -31,7 +42,7 @@
     <h2>Welcome, {{ request.user }}</h2>
 
     {% endif %}
-
+    <br>
 
 
 

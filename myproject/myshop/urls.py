@@ -40,6 +40,12 @@ urlpatterns = [
 
     path('all-orders', OllOderesView.as_view(), name='all_orders'),
 
+    path('update-order-status/<int:pk>', UpdateOederStatus.as_view(), name='order_status'),
+
+    path('products-search', ProductSearch.as_view(), name='product_search'),
+
+
+
 
 
 
