@@ -1,7 +1,6 @@
-from unicodedata import name
-from urllib import request
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, View, CreateView, FormView, DetailView, ListView
 
 from django.contrib.auth import authenticate, login, logout
@@ -13,6 +12,8 @@ from .models import *
 from .forms import CheckOutForm, CustomerRegistrationForm, LoginForm, AdminLoginForm, OrderStatusForm
 
 from django.db.models import Q
+
+import requests
 
 # Create your views here.
 
@@ -198,8 +199,59 @@ class CheckOutView(EcomMixin, CreateView):
             form.instance.discount = 0
             form.instance.total = cart_obj.total
             form.instance.order_status = "Order Received"
+            payment_method = form.cleaned_data.get('payment_method')
+            order = form.save()
+            if payment_method == 'Khalti':
+                return redirect(reverse('khalti_request') + "?o_id=" + str(order.id) )
             del self.request.session["cart_id"]
+            
         return super().form_valid(form)
+
+
+class KhaltiRequest(View):
+    def get(self, request, *args, **kwatgs):
+        o_id = request.GET.get("o_id")
+        order_obj = Order.objects.get(id=o_id)
+
+        context = { 
+            'order_obj': order_obj
+        }
+
+        return render(request, 'khalti_request.html', context)
+
+class KhaltiVerify(View):
+    def get(self, request, *args, **kwargs):
+        token = request.GET.get("token")
+        amount = request.GET.get("amount")
+        ord_id = request.GET.get("order_id")
+        print(token, amount, ord_id)
+
+        url = "https://khalti.com/api/v2/payment/verify/"
+        payload = {
+            "token": token,
+            "amount": amount
+        }
+        headers = {
+            "Authorization": "Key test_secret_key_dc15c17a029145d29a306594cdd90476"
+        }
+
+        order_obj = Order.objects.get(id=ord_id)
+
+        response = requests.post(url, payload, headers = headers)
+        response_json = response.json()
+        print(response_json)
+        if response_json.get("idx"):
+            success = True
+            order_obj.paymet_completed = True
+            order_obj.save()
+        else:
+            success = False
+
+        data = {
+            "success": success
+        }
+
+        return JsonResponse(data)
 
 class CustomerRegistrationView(CreateView):
     template_name = 'customer_registration.html'

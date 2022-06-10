@@ -16,6 +16,13 @@
             <p><span class="font-weight-bold">Phone: </span> {{ order_obj.mobile }}</p>
             <p><span class="font-weight-bold">Shipping Address: </span> {{ order_obj.shipping_address }}</p>
 
+            <p><span class="font-weight-bold">Payment Information:  
+            </span> Using {{ order_obj.payment_method }} 
+             ({% if order_obj.paymet_completed %}Payment completed
+             {% else %}Not Paid
+             {% endif %}) </p>
+
+
         </div>
         <div class="col-md-7">
             <h2>Product Details</h2> <hr>

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class CheckOutForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['ordered_by', 'shipping_address', 'mobile', 'email']
+        fields = ['ordered_by', 'shipping_address', 'mobile', 'email', 'payment_method']
 
 class CustomerRegistrationForm(forms.ModelForm):
     username = forms.CharField(widget=forms.TextInput())

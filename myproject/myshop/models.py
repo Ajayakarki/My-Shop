@@ -90,6 +90,11 @@ ORDER_STATUS =(
 
 )
 
+PAYMENT_METHOD =(
+    ('Cash On Delivery', 'Cash On Delivery'),
+    ('Khalti', 'Khalti'),
+)
+
 class Order(models.Model):
     cart = models.OneToOneField(Cart, on_delete=models.CASCADE)
     ordered_by = models.CharField(max_length=100)
@@ -101,6 +106,8 @@ class Order(models.Model):
     total = models.PositiveIntegerField()
     order_status = models.CharField(max_length=30, choices=ORDER_STATUS)
     order_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    payment_method = models.CharField(max_length=50, default='Cash On Delivery', choices=PAYMENT_METHOD)
+    paymet_completed = models.BooleanField(default=False, null=True, blank=True)
 
 
     class Meta:
