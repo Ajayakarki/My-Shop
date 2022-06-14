@@ -1,0 +1,43 @@
+{% extends 'adminbase.html' %}
+
+{% block title %} Product List {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row my-4">
+        <div class="col-md-12">
+            <table class="table bg-light">
+                <thead class="bg-primary">
+                    <a href="{% url 'add_product' %}">Add new product</a>
+                    <tr class="text-white">
+                        <th scope="col">SN</th>
+                        <th scope="col">Product</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">Marked Price</th>
+                        <th scope="col">Selling Price</th>
+                        <th scope="col">Total View</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in all_products %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="{% url 'productdetail' product.slug %}">{{ product.title }}</a></td>
+                        <td>{{ product.category.title }}</td>
+                        <td><img src="{{ product.image.url }}" height="42" width="55"></td>
+                        <td>{{ product.marked_price }}</td>
+                        <td>{{ product.selling_price }}</td>  
+                        <td>{{ product.view_count }}</td>                    
+                    </tr>
+                   {% endfor %}                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

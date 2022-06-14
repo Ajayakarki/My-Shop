@@ -1,5 +1,6 @@
+from itertools import product
 from django import forms
-from .models import Order, Customer
+from .models import Order, Customer, Product
 from django.contrib.auth.models import User
 
 class CheckOutForm(forms.ModelForm):
@@ -41,3 +42,30 @@ class OrderStatusForm(forms.ModelForm):
     class Meta:
         model = Order
         fields = ['order_status']
+
+
+class AddProductForm(forms.ModelForm):
+    more_images = forms.FileField(required=False, widget=forms.FileInput(attrs={
+        "class": "form-control",
+        "multiple": True
+    }))
+    class Meta:
+        model = Product
+        # fields = ['title', 'slug', 'category', 'image', 'marked_price', 'selling_price', 'description', 'warranty', 'return_policy']
+        exclude = ('view_count', )
+
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "slug": forms.TextInput(attrs={"class": "form-control"}),
+            "category": forms.Select(attrs={"class": "form-control"}),
+            "image": forms.ClearableFileInput(attrs={"class": "form-control"}),
+            "marked_price": forms.NumberInput(attrs={"class": "form-control"}),
+            "selling_price": forms.NumberInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control", 'rows': 5, 'placeholder': 'Add Description..'}),
+            "warranty": forms.TextInput(attrs={"class": "form-control"}),
+            "return_policy": forms.TextInput(attrs={"class": "form-control"}),
+
+            
+
+            
+        }

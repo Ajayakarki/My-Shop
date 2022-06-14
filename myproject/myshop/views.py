@@ -9,7 +9,7 @@ from django.contrib import messages
 
 from .models import *
 
-from .forms import CheckOutForm, CustomerRegistrationForm, LoginForm, AdminLoginForm, OrderStatusForm
+from .forms import CheckOutForm, CustomerRegistrationForm, LoginForm, AdminLoginForm, OrderStatusForm, AddProductForm
 
 from django.db.models import Q
 
@@ -430,6 +430,25 @@ class ProductSearch(TemplateView):
 
 
         return context
+
+
+class ProductList(AdminMixin, ListView):
+    template_name = 'all_products.html'
+    queryset = Product.objects.all().order_by('-id')
+    context_object_name = 'all_products'
+
+class AddProduct(AdminMixin, CreateView):
+    template_name = 'add_products.html'
+    form_class = AddProductForm
+    success_url = reverse_lazy('all_products')
+
+    def form_valid(self, form):
+        p = form.save()
+        multiple_images = self.request.FILES.getlist("more_images")
+        for img in multiple_images:
+            ProductImage.objects.create(product=p, image=img)
+        return super().form_valid(form)
+
         
 
     

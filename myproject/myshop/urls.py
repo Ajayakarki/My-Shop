@@ -48,6 +48,13 @@ urlpatterns = [
     path('update-order-status/<int:pk>', UpdateOederStatus.as_view(), name='order_status'),
 
     path('products-search', ProductSearch.as_view(), name='product_search'),
+    
+
+    path('products-list', ProductList.as_view(), name='all_products'),
+
+    path('add-product', AddProduct.as_view(), name='add_product'),
+
+
 
 
 
